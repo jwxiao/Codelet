@@ -12,31 +12,18 @@ public:
     sr() { val = 7; adr = 8; };
 };
 
-int max_set_bit_distance(int a)
-{
-    int i, max = -1, s = -1;
-
-    for (i = 0; a; i++) {
-        if (a & 1) {
-            if (s > -1) {
-                int d = i - s - 1;
-
-                if (d > max) {
-                    max = d;
-                }
-            }
-            s = i;
-        }
-        a >>= 1;
-    }
-
-    return max;
-}
-
+extern int max_set_bit_distance(int a);
+extern int is_prime23(int q);
+extern int count_set_bits(int a);
 
 int main(void)
 {
-#if 1
+    for (int p = 0; p < 30; p++) {
+        //printf("%d \t is_prime: %d\n", p , is_prime23(p));
+        printf("0x%x \t set_bits: %d\n", p , count_set_bits(p));
+    }
+
+#if 0
     vector<int> vars;
 
     vars.push_back(0);
@@ -51,7 +38,7 @@ int main(void)
         printf("%d \t distance: %d\n", vars.at(i), max_set_bit_distance(vars.at(i)));
     }
 #endif
-#if 1
+#if 0
     list<sr> lst1;
     vector<int> v1;
     string str;
