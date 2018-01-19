@@ -12,7 +12,7 @@ public:
     sr() { val = 7; adr = 8; };
 };
 
-int func(int a)
+int max_set_bit_distance(int a)
 {
     int i, max = -1, s = -1;
 
@@ -48,7 +48,7 @@ int main(void)
     vars.push_back(3664);
 
     for (int i = 0; i < vars.size(); i++) {
-        printf("%d \t distance: %d\n", vars.at(i), func(vars.at(i)));
+        printf("%d \t distance: %d\n", vars.at(i), max_set_bit_distance(vars.at(i)));
     }
 #endif
 #if 1
