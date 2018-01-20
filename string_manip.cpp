@@ -40,3 +40,9 @@ vector<int> partition_labels(string &s)
     return result;
 }
 
+void main_partition_labels(void)
+{
+    string str("ababc");
+
+    partition_labels(str);
+}

@@ -99,3 +99,15 @@ int order_of_largest_plus_sign(int N, vector<vector<int>>& mines)
 
     return global_max + 1; // + 1 for center cell
 }
+
+void main_order_of_largest_plus_sign(void)
+{
+    vector<int> hole;
+    vector<vector<int>> hole_list;
+    hole.push_back(4);
+    hole.push_back(2);
+    hole_list.push_back(hole);
+
+    printf("max order: %d\n", order_of_largest_plus_sign(5, hole_list));
+
+}

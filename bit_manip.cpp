@@ -1,5 +1,7 @@
 #include "common.h"
 
+using namespace std;
+
 int max_set_bit_distance(int a)
 {
     int i, max = -1, s = -1;
@@ -34,7 +36,6 @@ int is_prime23(int q)
 
     while (left <= right) {
         idx = ((left + right + 1) >> 1);
-        //printf("left idx right: %d - %d - %d\n", left, idx, right);
 
         if (q > primes23[idx]) {
             left = idx + 1;
@@ -69,3 +70,36 @@ int count_set_bits(int a)
 
     return cnt;
 }
+
+
+void max_set_bit_distance(void)
+{
+    vector<int> vars;
+
+    vars.push_back(0);
+    vars.push_back(127);
+    vars.push_back(128);
+    vars.push_back(132);
+    vars.push_back(395188);
+    vars.push_back(1972);
+    vars.push_back(3664);
+
+    for (int i = 0; i < vars.size(); i++) {
+        printf("%d \t distance: %d\n", vars.at(i), max_set_bit_distance(vars.at(i)));
+    }
+}
+
+void main_is_prime23(void)
+{
+    for (int i = 0; i < 25; i++) {
+        is_prime23(i);
+    }
+}
+
+void main_count_set_bits()
+{
+    for (int i = 0; i < 25; i++) {
+        count_set_bits(i);
+    }
+}
+

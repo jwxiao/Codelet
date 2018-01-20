@@ -2,14 +2,35 @@
 
 using namespace std;
 
-extern int max_set_bit_distance(int a);
-extern int is_prime23(int q);
-extern int count_set_bits(int a);
+extern void main_is_prime23(void);
+extern void main_count_set_bits(void);
+extern void max_set_bit_distance(void);
+extern void main_partition_labels(void);
+extern void main_order_of_largest_plus_sign(void);
 
-extern vector<int> partition_labels(string &s);
 
-extern int order_of_largest_plus_sign(int N, vector<vector<int>>& mines);
 
+
+int main(void)
+{
+    main_order_of_largest_plus_sign();
+    //main_partition_labels();
+    
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+#if 0
 class sr {
 public:
     int val;
@@ -19,36 +40,7 @@ public:
 
 int main(void)
 {
-    vector<int> hole;
-    vector<vector<int>> hole_list;
-    hole.push_back(4);
-    hole.push_back(2);
-    hole_list.push_back(hole);
 
-    printf("max order: %d\n", order_of_largest_plus_sign(5, hole_list));
-
-
-#if 0
-    string str ("ababc");
-
-    partition_labels(str);
-#endif
-#if 0
-    vector<int> vars;
-
-    vars.push_back(0);
-    vars.push_back(127);
-    vars.push_back(128);
-    vars.push_back(132);
-    vars.push_back(395188);
-    vars.push_back(1972);
-    vars.push_back(3664);
-
-    for (int i = 0; i < vars.size(); i++) {
-        printf("%d \t distance: %d\n", vars.at(i), max_set_bit_distance(vars.at(i)));
-    }
-#endif
-#if 0
     list<sr> lst1;
     vector<int> v1;
     string str;
@@ -98,6 +90,6 @@ int main(void)
     }
 
     return 0;
-#endif
 }
 
+#endif
