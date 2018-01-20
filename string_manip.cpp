@@ -3,10 +3,9 @@
 using namespace std;
 
 struct hist_elm {
-    char hist;
     int last_idx;
 
-    hist_elm(): hist(0), last_idx(-1) {}
+    hist_elm(): last_idx(-1) {}
 };
 
 vector<int> partition_labels(string &s)
@@ -17,7 +16,6 @@ vector<int> partition_labels(string &s)
     for (int i = 0; i < s.size(); i++) {
         int hi = s.at(i) - 'a';
 
-        hist_tbl[hi].hist++;
         if (i > hist_tbl[hi].last_idx) {
             hist_tbl[hi].last_idx = i;
         }
