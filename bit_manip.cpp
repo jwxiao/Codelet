@@ -1,3 +1,4 @@
+#include "common.h"
 
 int max_set_bit_distance(int a)
 {

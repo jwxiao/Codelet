@@ -1,9 +1,12 @@
-#include <stdio.h>
-#include <vector>
-#include <list>
-#include <string>
+#include "common.h"
 
 using namespace std;
+
+extern int max_set_bit_distance(int a);
+extern int is_prime23(int q);
+extern int count_set_bits(int a);
+
+extern vector<int> partition_labels(string &s);
 
 class sr {
 public:
@@ -12,16 +15,11 @@ public:
     sr() { val = 7; adr = 8; };
 };
 
-extern int max_set_bit_distance(int a);
-extern int is_prime23(int q);
-extern int count_set_bits(int a);
-
 int main(void)
 {
-    for (int p = 0; p < 30; p++) {
-        //printf("%d \t is_prime: %d\n", p , is_prime23(p));
-        printf("0x%x \t set_bits: %d\n", p , count_set_bits(p));
-    }
+    string str ("ababc");
+
+    partition_labels(str);
 
 #if 0
     vector<int> vars;
