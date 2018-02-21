@@ -157,6 +157,7 @@ int couple_hands(vector<int>& row)
             matched.at(GET_COUPLE(cur_pos)) = 1;
             total_couple++;
 
+#if 1
             while (updated_unmatched < matched.size()) {
                 if (matched.at(updated_unmatched)) {
                     updated_unmatched = (updated_unmatched | 1) + 1;
@@ -165,6 +166,7 @@ int couple_hands(vector<int>& row)
                     break;
                 }
             }
+#endif
             
             cur_pos = GET_COUPLE(position.at(GET_COUPLE(row.at(cur_pos))));
             total_swap++;
@@ -174,13 +176,27 @@ int couple_hands(vector<int>& row)
             matched.at(cur_pos) = 1;
             matched.at(GET_COUPLE(cur_pos)) = 1;
             total_couple++;
+            printf("@last cur_pos=%d\n", cur_pos);
+            printf("@last cur_pos2=%d\n", GET_COUPLE(cur_pos));
         }
         else {
             printf("fatal error, nothing done: cur_pos=%d fist_unmatched=%d total_couple=%d\n",
                 cur_pos, first_unmatched, total_couple);
         }
 
-        first_unmatched = updated_unmatched;
+        //first_unmatched = updated_unmatched;
+        printf("@last first_unmatched=%d\n", first_unmatched);
+        for (int i = /*first_unmatched*/updated_unmatched; i < matched.size(); i++) {
+            if (matched.at(i) == 0) {
+                printf("%d @ matched updated_unmatched=%d\n", i, updated_unmatched);
+                first_unmatched = i;
+                break;
+            }
+            else {
+                printf("%d not @ matched updated_unmatched=%d\n", i, updated_unmatched);
+            }
+        }
+        printf("==> final first_unmatched=%d\n", first_unmatched);
     }
 
     return total_swap;

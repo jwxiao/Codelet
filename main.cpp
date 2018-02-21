@@ -8,10 +8,12 @@ extern void max_set_bit_distance(void);
 extern void main_partition_labels(void);
 extern void main_order_of_largest_plus_sign(void);
 extern void main_couple_hands(void);
+extern void main_reorganizeString(void);
 
 int main(void)
 {
-    main_couple_hands();
+    main_reorganizeString();
+    //main_couple_hands();
     //main_order_of_largest_plus_sign();
     //main_partition_labels();
     
