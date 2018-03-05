@@ -89,6 +89,32 @@ void max_set_bit_distance(void)
     }
 }
 
+int kth_grammar(int N, int K)
+{
+    int pattern = 0, n = N - 1;
+
+    for (int i = 1; i < N; i++) {
+        int bm = (1 << (1 << (i - 1))) - 1;
+
+        pattern = (pattern | ((~pattern & bm) << (1 << (i - 1))));
+    }
+
+    return (pattern >> (K - 1)) & 1;
+}
+
+int kth_grammar2(int N, int K)
+{
+    int trans = 0;
+
+    for (int i = N; i > 1; i--) {
+        if (K > (1 << (i - 2))) {
+            K -= (1 << (i - 2));
+            trans++;
+        }
+    }
+    return (trans & 1);
+}
+
 void main_is_prime23(void)
 {
     for (int i = 0; i < 25; i++) {
@@ -96,10 +122,20 @@ void main_is_prime23(void)
     }
 }
 
-void main_count_set_bits()
+void main_count_set_bits(void)
 {
     for (int i = 0; i < 25; i++) {
         count_set_bits(i);
     }
 }
+
+void main_kth_grammar(void)
+{
+    printf("1,1 : %d\n", kth_grammar2(1, 1));
+    printf("2,1 : %d\n", kth_grammar2(2, 1));
+    printf("2,2 : %d\n", kth_grammar2(2, 2));
+    printf("4,5 : %d\n", kth_grammar2(4, 5));
+    printf("30,417219134 : %d\n", kth_grammar2(30, 417219134));
+}
+
 

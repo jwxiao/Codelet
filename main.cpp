@@ -10,10 +10,12 @@ extern void main_order_of_largest_plus_sign(void);
 extern void main_couple_hands(void);
 extern void main_reorganize_string(void);
 extern void main_max_chunks(void);
+extern void main_kth_grammar(void);
 
 int main(void)
 {
-    main_max_chunks();
+    main_kth_grammar();
+    //main_max_chunks();
     //main_reorganize_string();
     //main_couple_hands();
     //main_order_of_largest_plus_sign();
