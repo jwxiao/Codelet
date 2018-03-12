@@ -11,10 +11,12 @@ extern void main_couple_hands(void);
 extern void main_reorganize_string(void);
 extern void main_max_chunks(void);
 extern void main_kth_grammar(void);
+extern void main_swim_rising(void);
 
 int main(void)
 {
-    main_kth_grammar();
+    main_swim_rising();
+    //main_kth_grammar();
     //main_max_chunks();
     //main_reorganize_string();
     //main_couple_hands();
