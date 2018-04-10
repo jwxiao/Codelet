@@ -12,10 +12,14 @@ extern void main_reorganize_string(void);
 extern void main_max_chunks(void);
 extern void main_kth_grammar(void);
 extern void main_swim_rising(void);
+extern void main_isBipartite(void);
+extern void main_findCheapestPrice(void);
 
 int main(void)
 {
-    main_swim_rising();
+    main_findCheapestPrice();
+    //main_isBipartite();
+    //main_swim_rising();
     //main_kth_grammar();
     //main_max_chunks();
     //main_reorganize_string();
