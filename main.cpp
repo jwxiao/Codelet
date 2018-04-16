@@ -14,10 +14,12 @@ extern void main_kth_grammar(void);
 extern void main_swim_rising(void);
 extern void main_isBipartite(void);
 extern void main_findCheapestPrice(void);
+extern void main_kthSmallestPrimeFraction(void);
 
 int main(void)
 {
-    main_findCheapestPrice();
+    main_kthSmallestPrimeFraction();
+    //main_findCheapestPrice();
     //main_isBipartite();
     //main_swim_rising();
     //main_kth_grammar();
