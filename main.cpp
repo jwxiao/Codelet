@@ -15,10 +15,16 @@ extern void main_swim_rising(void);
 extern void main_isBipartite(void);
 extern void main_findCheapestPrice(void);
 extern void main_kthSmallestPrimeFraction(void);
+extern void main_tree_order_construct(void);
+extern void main_lowestCommonAncestor(void);
+extern void main_tree_serialization(void);
 
 int main(void)
 {
-    main_kthSmallestPrimeFraction();
+    main_tree_serialization();
+    //main_lowestCommonAncestor();
+    //main_tree_order_construct();
+    //main_kthSmallestPrimeFraction();
     //main_findCheapestPrice();
     //main_isBipartite();
     //main_swim_rising();
