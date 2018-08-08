@@ -334,12 +334,12 @@ TreeNode* deserialize(string data) {
             break;
         }
     }
-    cnt_tok /= 2;
+    printf("tok:%d, str:%s\n", cnt_tok, data.c_str());
 
-    for (int i = 0, s = 0; !ss_data.eof(); i++) {
+    for (int i = 0, s = 0; i < cnt_tok; i++) {
         ss_data >> s;
-
-        if (i < cnt_tok)
+        printf("[%d/%d] s=%d\n", i, cnt_tok, s);
+        if (i < (cnt_tok>>1))
             in_order.push_back(s);
         else 
             pre_order.push_back(s);
@@ -350,6 +350,53 @@ TreeNode* deserialize(string data) {
 
 void main_tree_serialization(void)
 {
+    TreeNode *r, *t;
+    string bs1, bs2;
+
+#if 1
+    //[1,10,null,9,11,null,8,12,null,7,null,null,13,null,6,14,null,5,null,null,15,null,4,16,null,3,null,null,17,null,2,18,null,1,null,null,19]
+    TreeNode a1(1);
+    TreeNode a1_2(1);
+    TreeNode a2(2);
+    TreeNode a3(3);
+    TreeNode a4(4);
+    TreeNode a5(5);
+    TreeNode a6(6);
+    TreeNode a7(7);
+    TreeNode a8(8);
+    TreeNode a9(9);
+    TreeNode a10(10);
+    TreeNode a11(11);
+    TreeNode a12(12);
+    TreeNode a13(13);
+    TreeNode a14(14);
+    TreeNode a15(15);
+    TreeNode a16(16);
+    TreeNode a17(17);
+    TreeNode a18(18);
+    TreeNode a19(19);
+    r = &a1;
+    a1.left = &a10;
+    a10.left = &a9;
+    a10.right = &a11;
+    a9.right = &a8;
+    a11.left = &a12;
+    a8.left = &a7;
+    a12.right = &a13;
+    a7.right = &a6;
+    a13.left = &a14;
+    a6.left = &a5;
+    a14.right = &a15;
+    a5.right = &a4;
+    a15.left = &a16;
+    a4.left = &a3;
+    a16.right = &a17;
+    a3.right = &a2;
+    a17.left = &a18;
+    a2.left = &a1_2;
+    a18.right = &a19;
+#endif
+#if 0
     //3,5,1,6,2,0,8,null,null,7,4
     TreeNode a3(3);
     TreeNode a5(5);
@@ -360,9 +407,7 @@ void main_tree_serialization(void)
     TreeNode a8(8);
     TreeNode a7(7);
     TreeNode a4(4);
-    TreeNode *t;
-    string bs1, bs2;
-
+    r = &a3;
     a3.left = &a5;
     a3.right = &a1;
     a5.left = &a6;
@@ -371,8 +416,11 @@ void main_tree_serialization(void)
     a1.right = &a8;
     a2.left = &a7;
     a2.right = &a4;
+#endif
 
-    bs1 = serialize(&a3);
+
+
+    bs1 = serialize(r);
     printf("bitstream: %s\n", bs1.c_str());
 
     t = deserialize(bs1);

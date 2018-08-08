@@ -18,10 +18,14 @@ extern void main_kthSmallestPrimeFraction(void);
 extern void main_tree_order_construct(void);
 extern void main_lowestCommonAncestor(void);
 extern void main_tree_serialization(void);
+extern void main_my_linked_list(void);
+extern void main_reverseList(void);
 
 int main(void)
 {
-    main_tree_serialization();
+    main_reverseList();
+    //main_my_linked_list();
+    //main_tree_serialization();
     //main_lowestCommonAncestor();
     //main_tree_order_construct();
     //main_kthSmallestPrimeFraction();
