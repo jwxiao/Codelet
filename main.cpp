@@ -20,10 +20,16 @@ extern void main_lowestCommonAncestor(void);
 extern void main_tree_serialization(void);
 extern void main_my_linked_list(void);
 extern void main_reverseList(void);
+extern void main_pivotIndex(void);
+extern void main_copyRandomList(void);
+extern void main_kmp_strstr(void);
 
 int main(void)
 {
-    main_reverseList();
+    main_kmp_strstr();
+    //main_copyRandomList();
+    //main_pivotIndex();
+    //main_reverseList();
     //main_my_linked_list();
     //main_tree_serialization();
     //main_lowestCommonAncestor();

@@ -259,3 +259,313 @@ void main_reverseList(void)
         r = r->next;
     }
 }
+
+bool isPalindrome (ListNode* head)
+{
+    ListNode *f = head, *s = head, *tmp;
+
+    if (head == 0) {
+        return true;
+    }
+    if (head->next == 0) {
+        return true;
+    }
+
+    while (f && f->next) {
+        f = f->next->next;
+        if (f == 0) {
+            break;
+        }
+
+        tmp = s->next;
+        s->next = tmp->next;
+        tmp->next = head;
+        head = tmp;
+    }
+
+    if (f == 0) { //odd edges
+        s = s->next;
+    }
+    else if (f->next == 0) { //even edges
+        s = s->next;
+        head = head->next;
+    }
+
+    while (s) {
+        if (s->val != head->val) {
+            return false;
+        }
+        s = s->next;
+        head = head->next;
+    }
+
+    return true;
+}
+
+
+ListNode* mergeTwoLists(ListNode* l1, ListNode* l2)
+{
+    ListNode *main, *sub, *st, *tmp;
+
+    if (!(l1 && l2)) {
+        return (l1) ? l1 : l2;
+    }
+
+    if (l1->val < l2->val) {
+        main = l1;
+        sub = l2;
+    }
+    else {
+        main = l2;
+        sub = l1;
+    }
+    st = main;
+
+    while (main->next && sub) {
+        if (sub->val >= main->next->val) {
+            main = main->next;
+            continue;
+        }
+
+        tmp = main->next;
+        main->next = sub;
+        main = tmp;
+
+        while ((sub->next) && (sub->next->val <= main->val)) {
+            sub = sub->next;
+        }
+
+        tmp = sub->next;
+        sub->next = main;
+        sub = tmp;
+    }
+    
+    if (sub) {
+        main->next = sub;
+    }
+
+    return st;
+}
+
+class Node {
+public:
+    int val = NULL;
+    Node* prev = NULL;
+    Node* next = NULL;
+    Node* child = NULL;
+
+    Node() {}
+
+    Node(int _val, Node* _prev, Node* _next, Node* _child) {
+        val = _val;
+        prev = _prev;
+        next = _next;
+        child = _child;
+    }
+};
+
+
+Node* getLast_recur(Node* head)
+{
+    Node *curr = head;
+
+    if (curr == 0)
+        return curr;
+
+    while (curr->next) {
+        if (curr->child) {
+            Node *child_last, *nextp;
+
+            child_last = getLast_recur(curr->child);
+            nextp = curr->next;
+
+            curr->next = curr->child;
+            curr->child->prev = curr;
+            curr->child = 0;
+
+            nextp->prev = child_last;
+            child_last->next = nextp;
+
+            curr = nextp;
+        }
+        else {
+            curr = curr->next;
+        }
+    }
+
+    if (curr->child) {
+        Node *child_last = getLast_recur(curr->child);
+        curr->child->prev = curr;
+        curr->next = curr->child;
+        curr->child = 0;
+
+        curr = child_last;
+    }
+
+    return curr;
+}
+
+Node* flatten(Node* head)
+{
+    getLast_recur(head);
+
+    return head;
+}
+
+
+struct RandomListNode {
+    int label;
+    RandomListNode *next, *random;
+    RandomListNode(int x) : label(x), next(NULL), random(NULL) {}
+};
+
+struct hash_node {
+    int         order;
+    void        *key;
+    hash_node   *next;
+
+public:
+    hash_node(int o, void *k) : order(o), key(k), next(nullptr) {}
+};
+
+struct bindptr {
+    RandomListNode  *org;
+    RandomListNode  *dup;
+
+public:
+    bindptr(RandomListNode *o, RandomListNode *d) : org(o), dup(d) {}
+};
+
+inline int hash_offset(void *ptr, int range)
+{
+    unsigned long long c = (unsigned long long)ptr;
+    return (c + (c >> 16) + (c >> 32)) % range;
+}
+
+RandomListNode *copyRandomList(RandomListNode *head)
+{
+    int n = 0;
+    RandomListNode      **pOrg, **pDup, *dupHead = nullptr;
+    vector<bindptr>     bindlut;
+    vector<hash_node*>  htbl_org;
+
+    if (head == nullptr)
+        return nullptr;
+
+    pOrg = &head;
+    pDup = &dupHead;
+    while (*pOrg) {
+        *pDup = new RandomListNode((*pOrg)->label);
+
+        bindlut.push_back(bindptr(*pOrg, *pDup));
+
+        pOrg = &((*pOrg)->next);
+        pDup = &((*pDup)->next);
+        n++;
+    }
+
+    htbl_org.resize(n);
+    htbl_org.assign(n, 0);
+
+    pOrg = &head;
+    for (int i = 0; i < n; i++) {
+        hash_node **pph = &(htbl_org[hash_offset(*pOrg, n)]);
+
+        while (*pph) {
+            pph = &((*pph)->next);
+        }
+        *pph = new hash_node(i, *pOrg);
+
+        pOrg = &((*pOrg)->next);
+    }
+
+    pOrg = &head;
+    pDup = &dupHead;
+    for (int i = 0; i < n; i++) {
+        if ((*pOrg)->random == nullptr) {
+            (*pDup)->random = nullptr;
+        }
+        else {
+            RandomListNode *k = (*pOrg)->random;
+            hash_node **pph = &(htbl_org[hash_offset(k, n)]);
+
+            while ((*pph)->key != k) {
+                pph = &((*pph)->next);
+            }
+
+            (*pDup)->random = bindlut[(*pph)->order].dup;
+        }
+
+        pOrg = &((*pOrg)->next);
+        pDup = &((*pDup)->next);
+    }
+
+    return dupHead;
+}
+
+void print_list(RandomListNode *p, char *tag)
+{
+    printf("%s order: ", tag);
+    while (p) {
+        if (p->random) {
+            printf("%d(%d), ", p->random->label, p->label);
+        }
+        else {
+            printf("NULL(%d), ", p->label);
+        }
+        p = p->next;
+    }
+    printf("\n");
+}
+
+void main_copyRandomList(void)
+{
+    RandomListNode n0(10);
+    RandomListNode n1(11);
+    RandomListNode n2(12);
+    RandomListNode n3(13);
+    RandomListNode *dup, *org;
+
+    n0.next = &n1;
+    n1.next = &n2;
+    n2.next = &n3;
+
+    n0.random = &n1;
+    n1.random = &n2;
+    n2.random = &n2;
+    n3.random = &n2;
+
+    dup = copyRandomList(&n0);
+    org = &n0;
+
+    print_list(org, "org");
+    print_list(dup, "dup");
+}
+
+ListNode* rotateRight(ListNode* head, int k)
+{
+    int n, k2 = k, d;
+    ListNode *last, *cur;
+
+    if ((head == nullptr) || (head->next == nullptr)) {
+        return head;
+    }
+
+    for (n = 1, cur = head; cur->next; cur = cur->next, n++);
+
+    last = cur;
+    k2 = k % n;
+    d = n - k2 - 1;
+
+    cur = head;
+    for (int i = 0; i < d; i++) {
+        cur = cur->next;
+    }
+
+    last->next = head;
+    head = cur->next;
+    cur->next = nullptr;
+
+    return head;
+}
+
