@@ -201,13 +201,10 @@ vector<int> spiralOrder(vector<vector<int>>& matrix)
     return serial;
 }
 
+
+
 int kmp_strstr(string haystack, string needle)
 {
-    //WRONG WRONG WRONG WRONG WRONG WRONG WRONG WRONG WRONG WRONG WRONG 
-    //WRONG WRONG WRONG WRONG WRONG WRONG WRONG WRONG WRONG WRONG WRONG 
-    //WRONG WRONG WRONG WRONG WRONG WRONG WRONG WRONG WRONG WRONG WRONG 
-    //WRONG WRONG WRONG WRONG WRONG WRONG WRONG WRONG WRONG WRONG WRONG 
-    //WRONG WRONG WRONG WRONG WRONG WRONG WRONG WRONG WRONG WRONG WRONG 
     int h = 0, n = 0;
     vector<int> nmatch;
  
@@ -222,30 +219,36 @@ int kmp_strstr(string haystack, string needle)
     nmatch.assign(nmatch.size(), -1);
 
     nmatch[0] = -1;
-    for (int i = 1; i < nmatch.size(); i++) {
-        if (needle[nmatch[i - 1] + 1] == needle[i]) {
-            nmatch[i] = nmatch[i - 1] + 1;
-        }
-        else if (((nmatch[i - 1] + 1) != 0) && (needle[i] == needle[0])) {
-            nmatch[i] = 0;
+    for (int i = 1, j = 0; i < nmatch.size(); ) {
+        if (needle[i] == needle[j]) {
+            nmatch[i] = j;
+            ++i; ++j;
         }
         else {
-            nmatch[i] = -1;
+            if (j == 0) {
+                nmatch[i] = -1;
+                ++i;
+            }
+            else {
+                j = nmatch[j - 1] + 1;
+            }
         }
     }
-    //s1 = "aabaaabaaac";
-    //s2 = "aabaaac";
-    for (; h <= (haystack.size() - needle.size()); h++) {
-        for (n = 0; n < needle.size(); n++) {
-            if (needle[n] != haystack[h]) {
-                if (n)
-                    n = nmatch[n - 1];
-                else break;
-            }
-            else h++;
+    for (; (h < haystack.size()) && (n < needle.size()); ) {
+        if (haystack[h] == needle[n]) {
+            ++h; ++n;
         }
-        if (n == needle.size())
-            return h - needle.size();
+        else {
+            if (n == 0) {
+                ++h;
+            }
+            else {
+                n = nmatch[n - 1] + 1;
+            }
+        }
+    }
+    if (n == needle.size()) {
+        return h - n;
     }
     return -1;
 }
