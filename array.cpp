@@ -278,3 +278,112 @@ void main_kmp_strstr(void)
     r = kmp_strstr(s1, s2);
     printf("r: %d s1=%s s2=%s\n", r, s1.c_str(), s2.c_str());
 }
+
+
+void qksort(vector<int>& nums, int l_idx, int r_idx)
+{
+    int pivot, l, r;
+
+    if ((r_idx - l_idx + 1) < 2) {
+        return;
+    }
+
+    pivot = nums[l_idx];
+    l = l_idx;
+    r = r_idx;
+
+    while (l < r) {
+        if (nums[l] <= pivot) {
+            l++;
+        }
+        else {
+            int swap = nums[l];
+            nums[l] = nums[r];
+            nums[r] = swap;
+            r--;
+        }
+    }
+#if 0
+    printf("sub: %d_%d %d_%d\n", l_idx, l - 1, l, r_idx);
+    for (int j = l_idx; j <= r_idx; j++)
+        printf("%d ", nums[j]);
+    printf("<=\n");
+#endif
+
+    if (nums[l] <= pivot) {
+        int swap = nums[l];
+        nums[l] = nums[l_idx];
+        nums[l_idx] = swap;
+        l--;
+        r++;
+    }
+    else {
+        int swap = nums[l - 1];
+        nums[l - 1] = nums[l_idx];
+        nums[l_idx] = swap;
+        l -= 2;
+    }
+
+    if (l > l_idx) {
+        qksort(nums, l_idx, l);
+    }
+    if (r < r_idx) {
+        qksort(nums, r, r_idx);
+    }
+}
+
+int arrayPairSum(vector<int>& nums)
+{
+    int sum = 0;
+
+    qksort(nums, 0, nums.size() - 1);
+#if 0
+    for (int j = 0; j < nums.size(); j++)
+        printf("%d ", nums[j]);
+    printf("<= final\n");
+#endif
+
+    for (int i = 0; i < nums.size(); i += 2) {
+        sum += nums[i];
+    }
+
+    return sum;
+}
+
+
+int minSubArrayLen(int s, vector<int>& nums)
+{
+    int head, foot;
+    int si, shortest;
+
+    if (nums.size() == 0)
+        return 0;
+
+    for (head = 0, foot = 0, si = 0; (si < s) && (head < nums.size()); head++) {
+        si += nums[head];
+    }
+    if (si < s)
+        return 0;
+    head--;
+    while (head < nums.size()) {
+        while (si - nums[foot] >= s) {
+            si -= nums[foot];
+            foot++;
+        }
+        shortest = head - foot + 1;
+        //printf("f_h len: %d_%d %d sum=%d\n", foot, head, shortest, si);
+
+        head++; foot++;
+        while ((head < nums.size())) {
+            si = si + nums[head] - nums[foot - 1];
+
+            if (si >= s)
+                break;
+            else {
+                head++; foot++;
+            }
+        }
+        //printf("    f_h len: %d_%d %d sum=%d\n", foot, head, shortest, si);
+    }
+    return shortest;
+}
