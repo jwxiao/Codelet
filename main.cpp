@@ -23,10 +23,12 @@ extern void main_reverseList(void);
 extern void main_pivotIndex(void);
 extern void main_copyRandomList(void);
 extern void main_kmp_strstr(void);
+extern void main_reverseWords(void);
 
 int main(void)
 {
-    main_kmp_strstr();
+    main_reverseWords();
+    //main_kmp_strstr();
     //main_copyRandomList();
     //main_pivotIndex();
     //main_reverseList();

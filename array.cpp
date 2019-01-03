@@ -387,3 +387,111 @@ int minSubArrayLen(int s, vector<int>& nums)
     }
     return shortest;
 }
+
+
+void reverseWords(string &s) {
+    int i, j, last_ch_offset;
+
+    if (s.size() < 1) {
+        return;
+    }
+
+    for (j = s.size() - 1; j >= 0; --j) {
+        if (s[j] != ' ')
+            break;
+    }
+    if (j < 0) {
+        s = "";
+        return;
+    }
+
+    last_ch_offset = j;
+    i = 0;
+    while (i < j) {
+        int temp = s[i];
+        s[i] = s[j];
+        s[j] = temp;
+        ++i, --j;
+    }
+
+    for (j = last_ch_offset; j >= 0; --j) {
+        if (s[j] != ' ')
+            break;
+    }
+    last_ch_offset = j;
+    i = 0;
+    while (i <= last_ch_offset) {
+        //printf("@%d\n", i);
+        int next_st;
+
+        j = i;
+        while ((j <= last_ch_offset) && (s[j] == ' '))
+            j++;
+        if (j > last_ch_offset)
+            break;
+        else if (j > i)
+            i++;
+        next_st = i;
+
+        while ((j <= last_ch_offset) && (s[j] != ' '))
+            j++;
+
+        --j;
+        while (i < j) {
+            int temp = s[i];
+            s[i] = s[j];
+            s[j] = temp;
+            ++i, --j;
+        }
+
+        i = next_st;
+        while ((i <= last_ch_offset) && (s[i] != ' '))
+            i++;
+    }
+
+    j = last_ch_offset;
+    while (s[j] == ' ') --j;
+    //s[j + 1] = 0;
+    s.resize(j + 1);
+}
+
+string reverseWords2(string s) {
+    int word_beg, word_end;
+
+    if (s.length() < 2) {
+        return s;
+    }
+
+    word_beg = 0;
+    while (word_beg < s.length()) {
+        while ((word_beg < s.length()) && (s[word_beg] == ' '))
+            ++word_beg;
+
+        word_end = word_beg + 1;
+        while ((word_end < s.length()) && (s[word_end] != ' '))
+            ++word_end;
+
+        for (int i = word_beg, j = word_end - 1; i < j; ++i, --j) {
+            int temp = s[i];
+            s[i] = s[j];
+            s[j] = temp;
+        }
+        
+        word_beg = word_end + 1;
+    }
+
+    return s;
+}
+
+void main_reverseWords(void)
+{
+    string s = "  the sky is blue   ";
+    s = " ";
+    s = "a";
+
+    printf("original_%d: [%s]\n", s.length(), s.c_str());
+
+    reverseWords(s);
+    
+    printf("reversed_%d: [%s]\n", s.size(), s.c_str());
+}
