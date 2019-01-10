@@ -503,6 +503,43 @@ RandomListNode *copyRandomList(RandomListNode *head)
     return dupHead;
 }
 
+class Solution {
+public:
+    RandomListNode *copyRandomList(RandomListNode *head) {
+        RandomListNode *node = head;
+        if (head == nullptr)
+            return nullptr;
+        while (node)
+        {
+            RandomListNode *now = new RandomListNode(node->label);
+            now->next = node->next;
+            node->next = now;
+            node = now->next;
+        }
+        node = head;
+        while (node)
+        {
+            if (node->random == nullptr)
+                node->next->random = nullptr;
+            else
+                node->next->random = node->random->next;
+            node = node->next->next;
+        }
+        node = head;
+        RandomListNode *result = head->next;
+        RandomListNode *last;
+        while (node)
+        {
+            last = node->next;
+            node->next = last->next;
+            if (last->next != nullptr)
+                last->next = last->next->next;
+            node = node->next;
+        }
+        return result;
+    }
+};
+
 void print_list(RandomListNode *p, char *tag)
 {
     printf("%s order: ", tag);
@@ -567,5 +604,69 @@ ListNode* rotateRight(ListNode* head, int k)
     cur->next = nullptr;
 
     return head;
+}
+
+
+vector<string> findRestaurant(vector<string>& list1, vector<string>& list2) {
+    unordered_map<string, int>  hmap;
+    int mins = list1.size() + list2.size() + 1;
+    vector<string> result;
+
+    for (int i = 0; i < list2.size(); i++) {
+        hmap.insert(make_pair(list2[i], i));
+    }
+
+#if 1
+    for (int i = 0; i < list1.size(); i++) {
+        auto f = hmap.find(list1[i]);
+        if (f != hmap.end()) {
+            int s = i + f->second;
+            if (s < mins) {
+                mins = s;
+            }
+        }
+    }
+    for (int i = 0; i < list1.size(); i++) {
+        auto f = hmap.find(list1[i]);
+        if (f != hmap.end()) {
+            if (mins == (i + f->second)) {
+                result.push_back(f->first);
+            }
+        }
+    }
+#else
+    for (int i = 0; i < list1.size(); i++) {
+        auto f = hmap.find(list1[i]);
+        if (f != hmap.end()) {
+            int s = i + f->second;
+            if (s < mins) {
+                mins = s;
+                result.clear();
+                result.push_back(f->first);
+            }
+            else if (s == mins) {
+                result.push_back(f->first);
+            }
+        }
+    }
+#endif
+    return result;
+}
+
+int firstUniqChar(string s) {
+    int map[256] = { 0 };
+    int offset = -1;
+
+    for (int i = 0; i < s.size(); ++i) {
+        map[s[i]]++;
+    }
+
+    for (int i = 0; i < s.size(); ++i) {
+        if (map[s[i]] == 1) {
+            offset = i;
+            break;
+        }
+    }
+    return offset;
 }
 
