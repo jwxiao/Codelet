@@ -491,6 +491,68 @@ void main_reverseWords(void)
 }
 
 
+void quick_sort_string(string &vec, int beg, int end)
+{
+    int i = beg, j = end, pivot = beg, tmp;
+
+    if (i >= j)
+        return;
+
+    if ((i + 1) == j) {
+        if (vec[i] > vec[j]) {
+            tmp = vec[i];
+            vec[i] = vec[j];
+            vec[j] = tmp;
+            return;
+        }
+    }
+
+    if ((i + 7) < j) {
+        int v0 = vec[i], v3 = vec[i + 3], v7 = vec[i + 7];
+        if (v0 > v3) {
+            if (v7 > v0) pivot = i;
+            else if (v7 > v3) pivot = i + 7;
+            else pivot = i + 3;
+        }
+        else {
+            if (v7 > v3) pivot = i + 3;
+            else if (v7 > v0) pivot = i + 7;
+            else pivot = i;
+        }
+        if (pivot != i) {
+            tmp = vec[pivot];
+            vec[pivot] = vec[i];
+            vec[i] = tmp;
+            pivot = i;
+        }
+    }
+
+    while (i <= j) {
+        if (vec[i] <= vec[pivot]) {
+            ++i;
+            continue;
+        }
+
+        while (vec[j] > vec[pivot]) --j;
+
+        if (i < j) {
+            tmp = vec[i];
+            vec[i] = vec[j];
+            vec[j] = tmp;
+            ++i; --j;
+        }
+    }
+
+    tmp = vec[pivot];
+    vec[pivot] = vec[i - 1];
+    vec[i - 1] = tmp;
+
+    quick_sort_string(vec, beg, i - 2);
+    quick_sort_string(vec, i, end);
+
+    return;
+}
+
 void sort_str(string &str, int beg, int end)
 {
     int piv = beg, tmp, i = beg, j = end;
@@ -557,4 +619,68 @@ vector<vector<string>> groupAnagrams(vector<string>& strs)
     }
 
     return result;
+}
+
+template <class T>
+void quick_sort(vector<T> &vec, int beg, int end)
+{
+    int i = beg, j = end, pivot = beg;
+    T tmp;
+
+    if (i >= j)
+        return;
+
+    if ((i + 1) == j) {
+        if (vec[i] > vec[j]) {
+            tmp = vec[i];
+            vec[i] = vec[j];
+            vec[j] = tmp;
+            return;
+        }
+    }
+
+    if ((i + 7) < j) {
+        int v0 = vec[i], v3 = vec[i + 3], v7 = vec[i + 7];
+        if (v0 > v3) {
+            if (v7 > v0) pivot = i;
+            else if (v7 > v3) pivot = i + 7;
+            else pivot = i + 3;
+        }
+        else {
+            if (v7 > v3) pivot = i + 3;
+            else if (v7 > v0) pivot = i + 7;
+            else pivot = i;
+        }
+        if (pivot != i) {
+            tmp = vec[pivot];
+            vec[pivot] = vec[i];
+            vec[i] = tmp;
+            pivot = i;
+        }
+    }
+
+    while (i <= j) {
+        if (vec[i] <= vec[pivot]) {
+            ++i;
+            continue;
+        }
+
+        while (vec[j] > vec[pivot]) --j;
+
+        if (i < j) {
+            tmp = vec[i];
+            vec[i] = vec[j];
+            vec[j] = tmp;
+            ++i; --j;
+        }
+    }
+
+    tmp = vec[pivot];
+    vec[pivot] = vec[i - 1];
+    vec[i - 1] = tmp;
+
+    quick_sort(vec, beg, i - 2);
+    quick_sort(vec, i, end);
+
+    return;
 }
