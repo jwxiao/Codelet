@@ -303,12 +303,6 @@ void qksort(vector<int>& nums, int l_idx, int r_idx)
             r--;
         }
     }
-#if 0
-    printf("sub: %d_%d %d_%d\n", l_idx, l - 1, l, r_idx);
-    for (int j = l_idx; j <= r_idx; j++)
-        printf("%d ", nums[j]);
-    printf("<=\n");
-#endif
 
     if (nums[l] <= pivot) {
         int swap = nums[l];
@@ -494,4 +488,73 @@ void main_reverseWords(void)
     reverseWords(s);
     
     printf("reversed_%d: [%s]\n", s.size(), s.c_str());
+}
+
+
+void sort_str(string &str, int beg, int end)
+{
+    int piv = beg, tmp, i = beg, j = end;
+
+    if (i >= j)
+        return;
+
+    if ((i + 1) == j) {
+        if (str[i] > str[j]) {
+            tmp = str[j];
+            str[j] = str[i];
+            str[i] = tmp;
+        }
+        return;
+    }
+    
+    while (i <= j) {
+        if (str[i] > str[piv]) {
+            while (str[j] > str[piv])
+                --j;
+
+            if (i < j) {
+                tmp = str[j];
+                str[j] = str[i];
+                str[i] = tmp;
+                --j;
+                ++i;
+            }
+        }
+        else
+            ++i;
+    }
+
+    tmp = str[i - 1];
+    str[i - 1] = str[piv];
+    str[piv] = tmp;
+
+    sort_str(str, beg, i - 2);
+    sort_str(str, i, end);
+}
+
+vector<vector<string>> groupAnagrams(vector<string>& strs)
+{
+    unordered_map<string, vector<string>> hmap;
+    unordered_map<string, vector<string>>::iterator itr;
+    vector<vector<string>> result;
+
+    for (int i = 0; i < strs.size(); i++) {
+        string s = strs[i];
+        sort_str(s, 0, s.size() - 1);
+        itr = hmap.find(s);
+        if (itr != hmap.end()) {
+            itr->second.push_back(strs[i]);
+        }
+        else {
+            vector<string> vs;
+            vs.push_back(strs[i]);
+            hmap.insert(make_pair(s, vs));
+        }
+    }
+
+    for (itr = hmap.begin(); itr != hmap.end(); itr++) {
+        result.push_back(itr->second);
+    }
+
+    return result;
 }
