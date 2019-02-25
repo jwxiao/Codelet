@@ -305,3 +305,121 @@ vector<TreeNode*> findDuplicateSubtrees(TreeNode* root)
 
     return result;
 }
+
+vector<vector<int>> threeSum(vector<int>& nums)
+{
+    unordered_map<int, vector<int>> tuples;
+    unordered_map<int, vector<int>> lut;
+    vector<vector<int>> result;
+    unordered_map<int, vector<int>>::iterator itr;
+    unordered_map<int, vector<int>>::iterator itr2;
+
+    for (int i = 0; i < nums.size(); i++) {
+        itr = lut.find(nums[i]);
+        if (itr != lut.end()) {
+            itr->second.push_back(i);
+        }
+        else {
+            vector<int> t;
+            t.push_back(i);
+            lut.insert(make_pair(nums[i], t));
+        }
+    }
+
+    for (int i = 0; i < nums.size(); i++) {
+
+        for (int j = i + 1; j < nums.size(); j++) {
+            int val = 0 - nums[i] - nums[j];
+            int a, b, c;
+
+            itr2 = lut.find(val);
+            if (itr2 != lut.end()) {
+                for (int k = 0; k < itr2->second.size(); k++) {
+                    if (itr2->second.at(k) > j) {
+                        if (nums[i] > nums[j]) {
+                            if (nums[i] > val) {
+                                if (nums[j] > val) {
+                                    a = val;
+                                    b = nums[j];
+                                }
+                                else {
+                                    a = nums[j];
+                                    b = val;
+                                }
+                                c = nums[i];
+                            }
+                            else {
+                                a = nums[j];
+                                b = nums[i];
+                                c = val;
+                            }
+                        }
+                        else {
+                            if (nums[i] > val) {
+                                a = val;
+                                b = nums[i];
+                                c = nums[j];
+                            }
+                            else {
+                                a = nums[i];
+                                if (nums[j] > val) {
+                                    b = val;
+                                    c = nums[j];
+                                }
+                                else {
+                                    b = nums[j];
+                                    c = val;
+                                }
+                            }
+                        }
+                        
+                        itr = tuples.find(a);
+                        if (itr != tuples.end()) {
+                            int t = 0;
+                            for (t = 0; t < itr->second.size(); t++) {
+                                if (itr->second.at(t) == b)
+                                    break;
+                            }
+                            if (t >= itr->second.size()) {
+                                vector<int> newtuple = { a, b , c };
+
+                                itr->second.push_back(b);
+                                result.push_back(newtuple);
+                            }
+                        }
+                        else {
+                            vector<int> t;
+                            vector<int> newtuple = { a, b, c };
+
+                            t.push_back(b);
+                            tuples.insert(make_pair(a, t));
+                            result.push_back(newtuple);
+                        }
+
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    return result;
+}
+
+void main_threeSum(void)
+{
+    vector<int> newtuple = { 0, 1, -1, 2, 1, -1 };
+    vector<vector<int>> obj;
+
+    obj = threeSum(newtuple);
+
+    for (int j = 0; j < obj.size(); j++) {
+        printf("dump set[%d]: ", j);
+        for (int i = 0; i < obj[j].size(); i++) {
+            printf("%d, ", obj[j][i]);
+        }
+        printf("\n");
+    }
+
+    return;
+}
