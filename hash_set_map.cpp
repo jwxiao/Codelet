@@ -559,3 +559,182 @@ void main_threeSum(void)
 
     return;
 }
+
+
+int fourSumCount(vector<int>& A, vector<int>& B, vector<int>& C, vector<int>& D) {
+    unordered_map<int, int> o2tab;
+    unordered_map<int, int>::iterator it;
+    int total = 0;
+
+    for (int c = 0; c < C.size(); c++) {
+        for (int d = 0; d < D.size(); d++) {
+            int sum = C[c] + D[d];
+            it = o2tab.find(sum);
+            if (it != o2tab.end())
+                it->second++;
+            else
+                o2tab.insert(make_pair(sum, 1));
+        }
+    }
+
+    for (int a = 0; a < A.size(); a++) {
+        for (int b = 0; b < B.size(); b++) {
+            it = o2tab.find(-(A[a] + B[b]));
+            if (it != o2tab.end())
+                total += it->second;
+        }
+    }
+
+    return total;
+}
+
+#include <algorithm>
+vector<int> topKFrequent(vector<int>& nums, int k) {
+    unordered_map<int, int> freq, invfreq;
+    unordered_map<int, int>::iterator it;
+    vector<int> spectrum, result;
+    int i = 0, f;
+
+    for (int i = 0; i < nums.size(); i++) {
+        it = freq.find(nums[i]);
+        if (it != freq.end())
+            it->second++;
+        else
+            freq.insert(make_pair(nums[i], 1));
+    }
+    if (freq.size() == nums.size()) {
+        for (i = 0; i < k; i++)
+            result.push_back(nums[i]);
+        return result;
+    }
+
+    spectrum.resize(freq.size());
+    for (it = freq.begin(), i = 0; it != freq.end(); it++, i++) {
+        spectrum[i] = it->second;
+    }
+    sort(spectrum.begin(), spectrum.end());
+    f = spectrum[spectrum.size() - k];
+
+    for (it = freq.begin(); it != freq.end(); it++) {
+        if (it->second > f)
+            result.push_back(it->first);
+    }
+
+    for (it = freq.begin(); (it != freq.end()) && (result.size() < k); it++) {
+        if (it->second == f)
+            result.push_back(it->first);
+    }
+
+    return result;
+}
+
+
+class RandomizedSet {
+public:
+    /** Initialize your data structure here. */
+
+    vector<unordered_map<int, int>::iterator> randvec;
+    unordered_map<int, int> mainlut;
+
+    RandomizedSet() {
+        srand(time(NULL));
+    }
+
+    /** Inserts a value to the set. Returns true if the set did not already contain the specified element. */
+    bool insert(int val) {
+        unordered_map<int, int>::iterator it;
+        it = mainlut.find(val);
+        if (it == mainlut.end()) {
+            mainlut.insert(make_pair(val, randvec.size()));
+            it = mainlut.find(val);
+            randvec.push_back(it);
+            return true;
+        }
+        else
+            return false;
+    }
+
+    /** Removes a value from the set. Returns true if the set contained the specified element. */
+    bool remove(int val) {
+        unordered_map<int, int>::iterator it;
+        it = mainlut.find(val);
+        if (it == mainlut.end()) {
+            return false;
+        }
+        else {
+            randvec[it->second] = randvec[randvec.size() - 1];
+            randvec[randvec.size() - 1]->second = it->second;
+
+            randvec.pop_back();
+            mainlut.erase(it);
+            return true;
+        }
+    }
+
+    /** Get a random element from the set. */
+    int getRandom() {
+        int r, k;
+        r = rand();
+        r %= randvec.size();
+        k = randvec[r]->first;
+        return k;
+    }
+};
+
+class RandomizedSetX {
+public:
+    /** Initialize your data structure here. */
+    RandomizedSetX() {
+
+    }
+
+    /** Inserts a value to the set. Returns true if the set did not already contain the specified element. */
+    bool insert(int val) {
+        // check exist?
+        if (!elementKey.count(val)){
+            // insert with new key
+            int key = nums.size();
+            nums.push_back(val);
+            elementKey[val] = key;
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    /** Removes a value from the set. Returns true if the set contained the specified element. */
+    bool remove(int val) {
+        // check exist
+        auto it = elementKey.find(val);
+        if (it != elementKey.end()){
+            int removedKey = it->second;
+            elementKey.erase(val);
+            // edge case: remove at last
+            if (removedKey == nums.size() - 1){
+                nums.pop_back();
+            }
+            else{
+                // pick the last element and use its key 
+                int lastElement = nums.back();
+                nums.pop_back();
+                nums[removedKey] = lastElement;
+                elementKey[lastElement] = removedKey;
+            }
+            return true;
+
+        }
+        else{
+            return false;
+        }
+    }
+
+    /** Get a random element from the set. */
+    int getRandom() {
+        return nums[rand() % nums.size()];
+    }
+
+private:
+    vector<int> nums;
+    unordered_map<int, int> elementKey;
+};
